@@ -36,12 +36,45 @@ const getTemples = async () => {
 };
 
 /* reset Function */
-
+const reset  =() => {
+    //Gets all the article elements within the templesElement
+    const articles = templesElement.querySelectorAll("article");
+    //Loops through and removes each article element
+    articles.forEach(article => {
+        templesElement.removeChild(article);
+    });
+};
 
 /* sortBy Function */
-
-
-
-getTemples();
+//Gets the value of the sortBy HTML element
+const sortBy = (temples) => {
+    reset();
+    const filter = document.getElementById("sortBy").value;
+    //Switch statement based on filter options provided
+    switch (filter) {
+        case "utah":
+            //Filter for temples that contain "Utah" in the location
+            displayTemples(temples.filter(temple => temple.location.includes("Utah")));
+            break;
+        case "notutah":
+            //Filter for temples that do not contain "Utah" in the location
+            displayTemples(temples.filter(temple => !temple.location.includes("Utah")));
+            break;
+        case "older":
+            //Filter for temples dedicated befor 1950
+            displayTemples(temples.filter(temple => new Date(temple.dedicated) < new Date(1950, 0, 1)));
+            break;
+        case "all":
+            //Shows all temple cards
+            displayTemples(temples);
+            break;
+    };
+};
 
 /* Event Listener */
+const sortByElement = document.getElementById("sortBy");
+sortByElement.addEventListener("change", () => {
+    sortBy(templeList);
+});
+
+getTemples();

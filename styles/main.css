@@ -58,30 +58,35 @@ nav ul li a:hover {
     color: black;
 }
 
-h1, h2 {
-    text-align: center;
-    margin-bottom: 15px;
-
-}
-
 h1 {
-border-bottom: 1px solid #ccc;
+    text-align: center;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
 }
-
+  
 h2 {
     font-size: 1.2rem;
     color: navy;
     text-align: center;
-    margin-top: 30px;
+    margin: 15px 0;
 }
 
 main {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center everything in the main container */
     margin-top: 125px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
-    align-items: center;
-    justify-content: center;
+}
+
+#sortBy {
+    margin-top: 10px; /* Adjust the spacing between the text and the dropdown */
+}
+
+#temples {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the temple cards */
+    margin: 0 auto;
 }
 
 picture {
