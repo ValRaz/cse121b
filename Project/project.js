@@ -1,5 +1,5 @@
 //Imports the SPI url constant from the config module
-import { API_URL } from "./trvialistconfig";
+import { API_URL } from "./projectconfig";
 
 //Instantiates varibale for storing questions, current question index, the score, and sets maximum high scores to ten
 let questions = [];
