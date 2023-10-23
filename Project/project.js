@@ -67,6 +67,11 @@ function displayQuestion() {
     }
 }
 
+//Normalizes answers by removing special characters and making them lower case
+function normalizeAnswer(answer) {
+    return answer.toLowerCase().replace(/[':,']+/g, '');
+}
+
 //Checks if the selected answer is correct and updates score accordingly
 function checkAnswer(event) {
     const userAnswer = event.target.textContent;
