@@ -22,7 +22,9 @@ nextButton.addEventListener("click", () => {
         startGame();
         gameStarted = true;
     }
+    else {
     nextQuestion();
+    }
 });
 showScoresButton.addEventListener("click", displayHighScores);
 
