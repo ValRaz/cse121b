@@ -10,21 +10,16 @@ let gameStarted = false;
 
 //Gets references to HTML elements including buttons
 const questionElement = document.getElementById("question");
-const optionsElement = document.getElementById("options");
+const answerInput = document.getElementById("answer");
+const submitButton = document.getElementById("submit");
 const resultElement = document.getElementById("result");
 const scoreElement = document.getElementById("score-value");
 const nextButton = document.getElementById("next");
 const showScoresButton = document.getElementById("show-scores");
 
 //Adds event listeners to each button includes functionality to start the game when next question button is pressed on page load
-nextButton.addEventListener("click", () => {
-    if (!gameStarted) {
-        startGame();
-        gameStarted = true;
-    }
-    nextQuestion();
-});
-
+nextButton.addEventListener("click", nextQuestion);
+submitButton.addEventListener("click", checkAnswer);
 showScoresButton.addEventListener("click", displayHighScores);
 
 //Initializes an array to store high scores
@@ -40,22 +35,12 @@ function startGame() {
     });
 }
 
-//Displays the current question and answer options
+//Displays the current question and clears input from previous question
 function displayQuestion() {
     if (currentQuestionIndex < questions.length) {
         const question = questions[currentQuestionIndex];
         questionElement.textContent = question.question;
-        optionsElement.innerHTML = "";
-
-        const options = question.incorrect_answers.concat(question.correct_answer);
-        shuffleArray(options);
-        options.forEach((option) => {
-            const optionButton = document.createElement("button");
-            optionButton.className = "btn option";
-            optionButton.textContent = option;
-            optionsElement.appendChild(optionButton);
-            optionButton.addEventListener("click", checkAnswer);
-        });
+        answerInput.value = "";
     }
     else {
         endGame();
@@ -64,10 +49,10 @@ function displayQuestion() {
 
 //Checks if the selected answer is correct and updates score accordingly
 function checkAnswer(event) {
-    const selectedOption = event.target.textContent;
+    const userAnswer = event.target.textContent;
     const correctAnswer = questions[currentQuestionIndex].correct_answer;
 
-    if (selectedOption ===correctAnswer) {
+    if (userAnswer === correctAnswer) {
         score++;
         resultElement.textContent = "Correct!";
         scoreElement.textContent = score;
@@ -76,8 +61,7 @@ function checkAnswer(event) {
         resultElement.textContent = `Incorrect! The right answer was ${correctAnswer}`;
     }
 
-    nextButton.style.display = "block";
-    currentQuestionIndex++;
+    nextQuestion();
 }
 
 //Moves to the next question
