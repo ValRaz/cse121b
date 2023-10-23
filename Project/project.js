@@ -47,13 +47,14 @@ function displayQuestion() {
         questionElement.textContent = question.question;
         optionsElement.innerHTML = "";
 
-        question.incorrect_answers.forEach((option) => {
-            optionsElement.innerHTML += `<button class = "btn option>${option}</button>`;
-        });
-        optionsElement.innerHTML += `<button class = "btn option">${question.correct_answer}</button>`;
-        const optionButtons = document.querySelectorAll(".option");
-        optionButtons.forEach((button) => {
-            button.addEventListener("click", checkAnswer);
+        const options = question.incorrect_answers.concat(question.correct_answer);
+        shuffleArray(options);
+        options.forEach((option) => {
+            const optionButton = document.createElement("button");
+            optionButton.className = "btn option";
+            optionButton.textContent = option;
+            optionsElement.appendChild(optionButton);
+            optionButton.addEventListener("click", checkAnswer);
         });
     }
     else {
