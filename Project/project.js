@@ -10,8 +10,7 @@ let gameStarted = false;
 
 //Gets references to HTML elements including buttons
 const questionElement = document.getElementById("question");
-const answerInput = document.getElementById("answer");
-const submitButton = document.getElementById("submit");
+const optionsElement = document.getElementById("options");
 const resultElement = document.getElementById("result");
 const scoreElement = document.getElementById("score-value");
 const nextButton = document.getElementById("next");
@@ -25,7 +24,6 @@ nextButton.addEventListener("click", () => {
     }
     nextQuestion();
 });
-submitButton.addEventListener("click", checkAnswer);
 showScoresButton.addEventListener("click", displayHighScores);
 
 //Initializes an array to store high scores
@@ -41,14 +39,28 @@ function startGame() {
     });
 }
 
-//Displays the current question and clears input from previous question
+//Displays the current question and answer options
 function displayQuestion() {
     if (currentQuestionIndex < questions.length) {
         const question = questions[currentQuestionIndex];
         questionElement.textContent = question.question;
-        answerInput.value = "";
         resultElement.textContent = "";
-        answerInput.placeholder = "Submit your answer here."
+        //Clears previous options
+        optionsElement.innerHTML = "";
+        //Creates button for the correct answer
+        const correctButton = document.createElement("button");
+        correctButton.classList.add("btn", "option");
+        correctButton.textContent = question.correct_answer;
+        optionsElement.appendChild(correctButton);
+        correctButton.addEventListener("click", checkAnswer);
+        //Creates buttons for incorrect answers
+        question.incorrect_answers.forEach((incorrectAnswer) => {
+            const button = document.createElement("button");
+            button.classList.add("btn", "option");
+            button.textContent = incorrectAnswer;
+            optionsElement.appendChild(button);
+            button.addEventListener("click", checkAnswer); 
+        });
     }
     else {
         endGame();
