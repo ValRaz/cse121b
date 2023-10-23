@@ -16,25 +16,14 @@ const scoreElement = document.getElementById("score-value");
 const nextButton = document.getElementById("next");
 const showScoresButton = document.getElementById("show-scores");
 
-//Promis to start game only after questions are loaded
-function startGameWhenQuestionsLoaded() {
-    if (questions.length === 0) {
-        setTimeout(startGameWhenQuestionsLoaded, 100);
-    }
-    else {
-        startGame();
-    }
-}
+// Initialize the game on page load
+window.addEventListener('load', () => {
+    startGame();
+});
 
-//Adds event listeners to each button includes functionality to start the game when next question button is pressed on page load
+//Adds event listeners to each button
 nextButton.addEventListener("click", () => {
-    if (!gameStarted) {
-        startGameWhenQuestionsLoaded();
-        gameStarted = true; 
-    }
-    else {  
     nextQuestion();
-    }
 });
 showScoresButton.addEventListener("click", displayHighScores);
 
@@ -80,15 +69,10 @@ function displayQuestion() {
     }
 }
 
-//Normalizes answers by removing special characters and making them lower case
-function normalizeAnswer(answer) {
-    return he.decode(answer).toLowerCase().replace(/[':,']+/g, '');
-}
-
 //Checks if the selected answer is correct and updates score accordingly
 function checkAnswer(event) {
     const userAnswer = event.target.textContent;
-    const correctAnswer = questions[currentQuestionIndex].correct_answer;
+    const correctAnswer = he.decode(questions[currentQuestionIndex].correct_answer);
 
     if (areAnswersEqual(userAnswer, correctAnswer)) {
         score++;
