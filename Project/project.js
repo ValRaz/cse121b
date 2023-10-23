@@ -69,12 +69,12 @@ function displayQuestion() {
 
 //Checks if the selected answer is correct and updates score accordingly
 function checkAnswer() {
-    const userAnswer = answerinput.value;
+    const userAnswer = event.target.textContent;
     const correctAnswer = questions[currentQuestionIndex].correct_answer;
 
-    if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-        resultElement.textContent = "Correct!";
+    if (userAnswer.toLowerCase() === correctAnswer) {
         score++;
+        resultElement.textContent = "Correct!";
         scoreElement.textContent = score;
     }
     else {
@@ -87,7 +87,7 @@ function checkAnswer() {
 //Moves to the next question
 function nextQuestion() {
     resultElement.textContent = "";
-    nextButton.style.display = "none";
+    currentQuestionIndex++;
     displayQuestion();
 }
 
