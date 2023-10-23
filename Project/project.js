@@ -17,8 +17,13 @@ const nextButton = document.getElementById("next");
 const showScoresButton = document.getElementById("show-scores");
 
 //Adds event listeners to each button includes functionality to start the game when next question button is pressed on page load
-nextButton.addEventListener("click", () => {  
+nextButton.addEventListener("click", () => {
+    if (!gameStarted) {
+        startGame();
+    }
+    else {  
     nextQuestion();
+    }
 });
 showScoresButton.addEventListener("click", displayHighScores);
 
@@ -31,6 +36,7 @@ function startGame() {
     .then((response) => response.json())
     .then ((data) => {
         questions = data.results;
+        currentQuestionIndex = 0;
         gameStarted = true;
         displayQuestion();
     });
