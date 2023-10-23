@@ -20,7 +20,7 @@ const showScoresButton = document.getElementById("show-scores");
 nextButton.addEventListener("click", () => {
     if (!gameStarted) {
         startGame();
-        gamestarted = tru;
+        gamestarted = true;
     }
     nextQuestion();
 });
@@ -68,7 +68,7 @@ function displayQuestion() {
 }
 
 //Checks if the selected answer is correct and updates score accordingly
-function checkAnswer() {
+function checkAnswer(event) {
     const userAnswer = event.target.textContent;
     const correctAnswer = questions[currentQuestionIndex].correct_answer;
 
