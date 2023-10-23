@@ -1,4 +1,4 @@
-//Imports the SPI url constant from the config module
+//Imports the API url constant from the config module
 import { API_URL } from "./projectconfig.js";
 
 //Instantiates varibale for storing questions, current question index, the score, and sets maximum high scores to ten
@@ -18,7 +18,13 @@ const nextButton = document.getElementById("next");
 const showScoresButton = document.getElementById("show-scores");
 
 //Adds event listeners to each button includes functionality to start the game when next question button is pressed on page load
-nextButton.addEventListener("click", nextQuestion);
+nextButton.addEventListener("click", () => {
+    if (!gameStarted) {
+        startGame();
+        gamestarted = tru;
+    }
+    nextQuestion();
+});
 submitButton.addEventListener("click", checkAnswer);
 showScoresButton.addEventListener("click", displayHighScores);
 
@@ -50,13 +56,13 @@ function displayQuestion() {
 }
 
 //Checks if the selected answer is correct and updates score accordingly
-function checkAnswer(event) {
+function checkAnswer() {
     const userAnswer = answerinput.value;
     const correctAnswer = questions[currentQuestionIndex].correct_answer;
 
-    if (userAnswer === correctAnswer) {
-        score++;
+    if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
         resultElement.textContent = "Correct!";
+        score++;
         scoreElement.textContent = score;
     }
     else {
