@@ -41,6 +41,8 @@ function displayQuestion() {
         const question = questions[currentQuestionIndex];
         questionElement.textContent = question.question;
         answerInput.value = "";
+        resultElement.textContent = "";
+        answerInput.placeholder = "Submit your answer here."
     }
     else {
         endGame();
@@ -49,7 +51,7 @@ function displayQuestion() {
 
 //Checks if the selected answer is correct and updates score accordingly
 function checkAnswer(event) {
-    const userAnswer = event.target.textContent;
+    const userAnswer = answerinput.value;
     const correctAnswer = questions[currentQuestionIndex].correct_answer;
 
     if (userAnswer === correctAnswer) {
