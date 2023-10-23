@@ -10,14 +10,14 @@ let gameStarted = false;
 
 //Gets references to HTML elements including buttons
 const questionElement = document.getElementById("question");
-const optionsElement = document.getElementsById("options");
+const optionsElement = document.getElementById("options");
 const resultElement = document.getElementById("result");
 const scoreElement = document.getElementById("score-value");
 const nextButton = document.getElementById("next");
 const showScoresButton = document.getElementById("show-scores");
 
 //Adds event listeners to each button includes functionality to start the game when next question button is pressed on page load
-nextButton.addEventlistern("click", () => {
+nextButton.addEventlistener("click", () => {
     if (!gameStarted) {
         startGame();
         gameStarted = true;
@@ -50,7 +50,7 @@ function displayQuestion() {
         question.incorrect_answers.foreach((option) => {
             optionsElement.innerHTML += `<button class = "btn option>${option}</button`;
         });
-        optionsElement.innerHTML += `<button class = "btn option"${question.correct_answer}</button>$`;
+        optionsElement.innerHTML += `<button class = "btn option">${question.correct_answer}</button>`;
         const optionButtons = document.querySelectorAll(".option");
         optionButtons.forEach((button) => {
             button.addEventListener("click", checkAnswer);
@@ -72,7 +72,7 @@ function checkAnswer(event) {
         scoreElement.textContent = score;
     }
     else {
-        resultElement = `Incorrect! The right answer was ${correctAnswer}`;
+        resultElement.testContent = `Incorrect! The right answer was ${correctAnswer}`;
     }
 
     nextButton.style.display = "block";
@@ -95,7 +95,7 @@ function endGame() {
 
     //Checks if the current score is higher than any high score currently existing on the array
     const currentScoreIndex = highScores.findIndex((existingScore) => score > existingScore);
-    if (currentscoreIndex !== -1) {
+    if (currentScoreIndex !== -1) {
         //Replaces the lowest high score with the current score if appropriate
         highScores.splice(currentScoreIndex, 1, score);
     }
