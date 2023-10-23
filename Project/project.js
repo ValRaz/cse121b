@@ -17,7 +17,7 @@ const nextButton = document.getElementById("next");
 const showScoresButton = document.getElementById("show-scores");
 
 //Adds event listeners to each button includes functionality to start the game when next question button is pressed on page load
-nextButton.addEventlistener("click", () => {
+nextButton.addEventListener("click", () => {
     if (!gameStarted) {
         startGame();
         gameStarted = true;
@@ -44,11 +44,11 @@ function startGame() {
 function displayQuestion() {
     if (currentQuestionIndex < questions.length) {
         const question = questions[currentQuestionIndex];
-        questionElement.testContent = question.question;
+        questionElement.textContent = question.question;
         optionsElement.innerHTML = "";
 
-        question.incorrect_answers.foreach((option) => {
-            optionsElement.innerHTML += `<button class = "btn option>${option}</button`;
+        question.incorrect_answers.forEach((option) => {
+            optionsElement.innerHTML += `<button class = "btn option>${option}</button>`;
         });
         optionsElement.innerHTML += `<button class = "btn option">${question.correct_answer}</button>`;
         const optionButtons = document.querySelectorAll(".option");
@@ -72,7 +72,7 @@ function checkAnswer(event) {
         scoreElement.textContent = score;
     }
     else {
-        resultElement.testContent = `Incorrect! The right answer was ${correctAnswer}`;
+        resultElement.textContent = `Incorrect! The right answer was ${correctAnswer}`;
     }
 
     nextButton.style.display = "block";
