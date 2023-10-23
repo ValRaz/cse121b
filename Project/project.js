@@ -20,7 +20,7 @@ const showScoresButton = document.getElementById("show-scores");
 nextButton.addEventListener("click", () => {
     if (!gameStarted) {
         startGame();
-        gamestarted = true;
+        gameStarted = true;
     }
     nextQuestion();
 });
@@ -43,7 +43,7 @@ function startGame() {
 function displayQuestion() {
     if (currentQuestionIndex < questions.length) {
         const question = questions[currentQuestionIndex];
-        questionElement.textContent = question.question;
+        questionElement.textContent = he.decode(question.question);
         resultElement.textContent = "";
         //Clears previous options
         optionsElement.innerHTML = "";
@@ -69,7 +69,7 @@ function displayQuestion() {
 
 //Normalizes answers by removing special characters and making them lower case
 function normalizeAnswer(answer) {
-    return answer.toLowerCase().replace(/[':,']+/g, '');
+    return he.decode(answer).toLowerCase().replace(/[':,']+/g, '');
 }
 
 //Checks if the selected answer is correct and updates score accordingly
@@ -77,7 +77,7 @@ function checkAnswer(event) {
     const userAnswer = event.target.textContent;
     const correctAnswer = questions[currentQuestionIndex].correct_answer;
 
-    if (userAnswer.toLowerCase() === correctAnswer) {
+    if (areAnswersEqual(userAnswer, correctAnswer)) {
         score++;
         resultElement.textContent = "Correct!";
         scoreElement.textContent = score;
