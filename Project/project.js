@@ -16,10 +16,21 @@ const scoreElement = document.getElementById("score-value");
 const nextButton = document.getElementById("next");
 const showScoresButton = document.getElementById("show-scores");
 
+//Promis to start game only after questions are loaded
+function startGameWhenQuestionsLoaded() {
+    if (questions.length === 0) {
+        setTimeout(startGameWhenQuestionsLoaded, 100);
+    }
+    else {
+        startGame();
+    }
+}
+
 //Adds event listeners to each button includes functionality to start the game when next question button is pressed on page load
 nextButton.addEventListener("click", () => {
     if (!gameStarted) {
-        startGame();
+        startGameWhenQuestionsLoaded();
+        gameStarted = true; 
     }
     else {  
     nextQuestion();
@@ -37,7 +48,6 @@ function startGame() {
     .then ((data) => {
         questions = data.results;
         currentQuestionIndex = 0;
-        gameStarted = true;
         displayQuestion();
     });
 }
