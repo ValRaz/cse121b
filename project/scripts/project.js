@@ -1,5 +1,5 @@
 //Imports the API url constant from the config module
-import { API_URL } from "./projectconfig.js";
+import { API_URL } from "./projectconfig";
 
 //Instantiates varibale for storing questions, current question index, the score, and sets maximum high scores to ten
 let questions = [];
