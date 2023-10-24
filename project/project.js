@@ -25,7 +25,7 @@ let highScores = savedHighScores;
 displayHighScores();
 
 // Initialize the game on page load
-window.addEventListener('load', () => {
+window.addEventListener("load", () => {
     startGame();
 });
 
