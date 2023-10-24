@@ -17,7 +17,7 @@ const nextButton = document.getElementById("next");
 const showScoresButton = document.getElementById("show-scores");
 
 //Retrieves high scores from local storage
-savedHighScores = JSON.parse(localStorage.getItem("highScores")) || [];
+let savedHighScores = JSON.parse(localStorage.getItem("highScores")) || [];
 
 //Initializes an array to store high scores
 let highScores = savedHighScores;
@@ -31,7 +31,7 @@ window.addEventListener('load', () => {
 nextButton.addEventListener("click", () => {
     nextQuestion();
 });
-showScoresButton.addEventListener("click", displayHighScores);
+showScoresButton.addEventListener("click", displayHighScores(savedHighScores));
 
 //Starts game, fetches questions and initiates the first question
 function startGame() {
@@ -45,7 +45,7 @@ function startGame() {
 }
 
 //Displays the current question and answer options
-function displayQuestion() {
+function displayQuestion(savedHighScores) {
     if (currentQuestionIndex < questions.length) {
         const question = questions[currentQuestionIndex];
         questionElement.textContent = he.decode(question.question);
