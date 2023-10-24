@@ -16,6 +16,12 @@ const scoreElement = document.getElementById("score-value");
 const nextButton = document.getElementById("next");
 const showScoresButton = document.getElementById("show-scores");
 
+//Retrieves high scores from local storage
+savedHighScores = JSON.parse(localStorage.getItem("highScores")) || [];
+
+//Initializes an array to store high scores
+let highScores = savedHighScores;
+
 // Initialize the game on page load
 window.addEventListener('load', () => {
     startGame();
@@ -26,9 +32,6 @@ nextButton.addEventListener("click", () => {
     nextQuestion();
 });
 showScoresButton.addEventListener("click", displayHighScores);
-
-//Initializes an array to store high scores
-let highScores = [];
 
 //Starts game, fetches questions and initiates the first question
 function startGame() {
@@ -116,6 +119,9 @@ function endGame() {
     highScores.sort((a, b) => b - a);
     //Maintains a limit of 10 high scores stored on the array
     highScores = highScores.slice(0, maxhighScores);
+
+    //Saves the updated high scores array in local storage
+    localStorage.setItem("highScores", JSON.stringify(highScores));
 
     displayHighScores();
 }
