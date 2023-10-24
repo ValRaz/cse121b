@@ -1,80 +1,145 @@
-/* W05: Programming Tasks */
-/* Declare and initialize global variables */
-const templesElement = document.querySelector("#temples");
-const templeList = [];
+///Defines API URL
+const API_URL = "https://opentdb.com/api.php?amount=15&category=9&difficulty=easy";
 
-/* async displayTemples Function */
-const displayTemples = (temples) =>{
-    //Creates an article element for each temple in the array list
-    temples.forEach((temple) => {
-        const articleElement = document.createElement("article");
-        //Creates and H3 element to house the templeName property
-        const h3Element = document.createElement("h3");
-        h3Element.textContent = temple.templeName;
-        //Creates the img element and sets src and alt attributes
-        const imgElement = document.createElement("img");
-        imgElement.src = temple.imageUrl;
-        imgElement.alt = temple.location;
-        //Appends the h3 and img elements to the article element as children
-        articleElement.appendChild(h3Element);
-        articleElement.appendChild(imgElement);
-        //Appends the article element to the templesElement
-        templesElement.appendChild(articleElement)
-    })
-}
+//Instantiates varibale for storing questions, current question index, the score, and sets maximum high scores to ten
+let questions = [];
+let currentQuestionIndex = 0;
+let score = 0;
+const maxhighScores = 10;
+let gameStarted = false;
 
-/* async getTemples Function using fetch()*/
-const getTemples = async () => {
-    //fetches data from temply array url
-    const response = await fetch("https://byui-cse.github.io/cse121b-ww-course/resources/temples.json");
-    //converts data fetched to an object
-    const data = await response.json();
-    //assignes the converted data to the templeList global variable
-    templeList.push(...data);
-    //Calls displayTemples function
-    displayTemples(templeList);
-};
+//Gets references to HTML elements including buttons
+const questionElement = document.getElementById("question");
+const optionsElement = document.getElementById("options");
+const resultElement = document.getElementById("result");
+const scoreElement = document.getElementById("score-value");
+const nextButton = document.getElementById("next");
+const showScoresButton = document.getElementById("show-scores");
 
-/* reset Function */
-const reset  =() => {
-    //Gets all the article elements within the templesElement
-    const articles = templesElement.querySelectorAll("article");
-    //Loops through and removes each article element
-    articles.forEach(article => {
-        templesElement.removeChild(article);
-    });
-};
+//Retrieves high scores from local storage
+let savedHighScores = JSON.parse(localStorage.getItem("highScores")) || [];
 
-/* sortBy Function */
-//Gets the value of the sortBy HTML element
-const sortBy = (temples) => {
-    reset();
-    const filter = document.getElementById("sortBy").value;
-    //Switch statement based on filter options provided
-    switch (filter) {
-        case "utah":
-            //Filter for temples that contain "Utah" in the location
-            displayTemples(temples.filter(temple => temple.location.includes("Utah")));
-            break;
-        case "notutah":
-            //Filter for temples that do not contain "Utah" in the location
-            displayTemples(temples.filter(temple => !temple.location.includes("Utah")));
-            break;
-        case "older":
-            //Filter for temples dedicated before 1950
-            displayTemples(temples.filter(temple => new Date(temple.dedicated) < new Date(1950, 0, 1)));
-            break;
-        case "all":
-            //Shows all temple cards
-            displayTemples(temples);
-            break;
-    };
-};
+//Initializes an array to store high scores
+let highScores = savedHighScores;
 
-/* Event Listener */
-const sortByElement = document.getElementById("sortBy");
-sortByElement.addEventListener("change", () => {
-    sortBy(templeList);
+displayHighScores();
+
+// Initialize the game on page load
+window.addEventListener("load", () => {
+    startGame();
 });
 
-getTemples();
+//Adds event listeners to each button
+nextButton.addEventListener("click", () => {
+    nextQuestion();
+});
+showScoresButton.addEventListener("click", () => displayHighScores(savedHighScores));
+
+//Starts game, fetches questions and initiates the first question
+function startGame() {
+    fetch(API_URL)
+    .then((response) => response.json())
+    .then ((data) => {
+        questions = data.results;
+        currentQuestionIndex = 0;
+        displayQuestion();
+    });
+}
+
+//Displays the current question and answer options
+function displayQuestion(savedHighScores) {
+    if (currentQuestionIndex < questions.length) {
+        const question = questions[currentQuestionIndex];
+        questionElement.textContent = he.decode(question.question);
+        resultElement.textContent = "";
+        //Clears previous options
+        optionsElement.innerHTML = "";
+        //Creates button for the correct answer
+        const correctButton = document.createElement("button");
+        correctButton.classList.add("btn", "option");
+        correctButton.textContent = question.correct_answer;
+        optionsElement.appendChild(correctButton);
+        correctButton.addEventListener("click", checkAnswer);
+        //Creates buttons for incorrect answers
+        question.incorrect_answers.forEach((incorrectAnswer) => {
+            const button = document.createElement("button");
+            button.classList.add("btn", "option");
+            button.textContent = he.decode(incorrectAnswer);
+            optionsElement.appendChild(button);
+            button.addEventListener("click", checkAnswer); 
+        });
+    }
+    else {
+        endGame();
+    }
+}
+
+// Compares the user's answer with the correct answer
+function areAnswersEqual(userAnswer, correctAnswer) {
+    return userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+}
+
+//Checks if the selected answer is correct and updates score accordingly
+function checkAnswer(event) {
+    const userAnswer = event.target.textContent;
+    const correctAnswer = he.decode(questions[currentQuestionIndex].correct_answer);
+
+    if (areAnswersEqual(userAnswer, correctAnswer)) {
+        score++;
+        resultElement.textContent = "Correct!";
+        scoreElement.textContent = score;
+    }
+    else {
+        resultElement.textContent = `Incorrect! The right answer was ${correctAnswer}`;
+    }
+
+    nextQuestion();
+}
+
+//Moves to the next question
+function nextQuestion() {
+    resultElement.textContent = "";
+    currentQuestionIndex++;
+    displayQuestion();
+}
+
+//Ends game and updates high scores if appropriate
+function endGame() {
+    questionElement.textContent = "Game Over";
+    optionsElement.innerHTML = "";
+    resultElement.textContent = `Your final score is: ${score}`;
+    nextButton.style.display = "none";
+
+    //Checks if the current score is higher than any high score currently existing on the array
+    const currentScoreIndex = highScores.findIndex((existingScore) => score > existingScore);
+    if (currentScoreIndex !== -1) {
+        //Replaces the lowest high score with the current score if appropriate
+        highScores.splice(currentScoreIndex, 1, score);
+    }
+
+    //Sorts the array of high scores in ascending order
+    highScores.sort((a, b) => b - a);
+    //Maintains a limit of 10 high scores stored on the array
+    highScores = highScores.slice(0, maxhighScores);
+
+    //Saves the updated high scores array in local storage
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+
+    displayHighScores();
+}
+
+//Displays High Scores from the stored array in an unordered list
+function displayHighScores() {
+    const container = document.querySelector(".container");
+    const existingHighScoresList = document.querySelector(".high-scores");
+
+    if (existingHighScoresList) {
+        container.removeChild(existingHighScoresList);
+    }
+
+    const highScoresList = highScores.map((score, index) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = `#${index + 1}: ${score}`;
+        returnlistItem;
+        });
+}
