@@ -130,15 +130,16 @@ function endGame() {
 
 //Displays High Scores from the stored array in an unordered list
 function displayHighScores() {
-    const highScoresList = document.createElement("ul");
-    highScoresList.classList.add("high-scores");
-
-    highScores.forEach ((score, index) => {
-        const listItem = document.createElement("li");
-        listItem.textContent = `#${index +1}: ${score}`;
-        highScoresList.appendChild(listItem);
-    });
-
     const container = document.querySelector(".container");
-    container.appendChild(highScoresList);
+    const existingHighScoresList = document.querySelector(".high-scores");
+
+    if (existingHighScoresList) {
+        container.removeChild(existingHighScoresList);
+    }
+
+    const highScoresList = highScores.map((score, index) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = `#${index + 1}: ${score}`;
+        returnlistItem;
+        });
 }
