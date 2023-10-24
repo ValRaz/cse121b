@@ -22,6 +22,8 @@ let savedHighScores = JSON.parse(localStorage.getItem("highScores")) || [];
 //Initializes an array to store high scores
 let highScores = savedHighScores;
 
+displayHighScores();
+
 // Initialize the game on page load
 window.addEventListener('load', () => {
     startGame();
