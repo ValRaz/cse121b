@@ -17,7 +17,7 @@ const nextButton = document.getElementById("next");
 const showScoresButton = document.getElementById("show-scores");
 
 //Retrieves high scores from local storage
-let savedHighScores = JSON.parse(localStorage.getItem("highScores"));
+let savedHighScores = JSON.parse(localStorage.getItem("highScores")) || [];
 
 //Initializes an array to store high scores
 let highScores = savedHighScores;
