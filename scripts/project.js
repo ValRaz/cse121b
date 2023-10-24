@@ -50,15 +50,8 @@ function displayQuestion() {
         //Shuffles the answers array
         shuffleArray(answers);
 
-        //Creates button for the shuffled answers
-        const buttons = answers.map((answer) => {
-            const button = document.createElement("button");
-            button.classList.add("btn", "option");
-            button.textContent = he.decode(answer);
-            button.addEventListener("click", checkAnswer);
-            optionsElement.appendChild(button);
-            return button;
-        });
+        //Creates button for each answer
+        const buttons = answers.map((answer) => createButton(answer));
     }
     else {
         endGame();
@@ -68,9 +61,19 @@ function displayQuestion() {
 //Function for shuffling an array
 function shuffleArray(array) {
     for (let i = array.length - 1; i> 0; i--) {
-        const j = Math.floor(math.random() * (i+1));
+        const j = Math.floor(Math.random() * (i+1));
         [array[i], array[j]] = [array[j], array[i]];
     }
+}
+
+//Function that allows for creation of a button for each answer
+function createButton(answer) {
+    const button = document.createElement("button");
+    button.classList.add("btn", "option");
+    button.textContent = he.decode(answer);
+    button.addEventListener("click", checkAnswer);
+    optionsElement.appendChild(button);
+    return button;
 }
 
 // Compares the user's answer with the correct answer
