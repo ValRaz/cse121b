@@ -1,5 +1,5 @@
 //Imports the API url constant from the config module
-import { API_URL } from "../project/projectconfig.js";
+import { API_URL } from "C:/Users/nutca/OneDrive/Documents/cse121b/scripts/projectconfig";
 
 //Instantiates varibale for storing questions, current question index, the score, and sets maximum high scores to ten
 let questions = [];
