@@ -31,7 +31,7 @@ window.addEventListener('load', () => {
 nextButton.addEventListener("click", () => {
     nextQuestion();
 });
-showScoresButton.addEventListener("click", displayHighScores(savedHighScores));
+showScoresButton.addEventListener("click", () => displayHighScores(savedHighScores));
 
 //Starts game, fetches questions and initiates the first question
 function startGame() {
