@@ -69,6 +69,11 @@ function displayQuestion() {
     }
 }
 
+// Compares the user's answer with the correct answer
+function areAnswersEqual(userAnswer, correctAnswer) {
+    return userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+}
+
 //Checks if the selected answer is correct and updates score accordingly
 function checkAnswer(event) {
     const userAnswer = event.target.textContent;
