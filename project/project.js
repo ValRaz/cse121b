@@ -1,5 +1,5 @@
 //Imports the API url constant from the config module
-import { API_URL } from "./projectconfig";
+import { API_URL } from "./projectconfig.js";
 
 //Instantiates varibale for storing questions, current question index, the score, and sets maximum high scores to ten
 let questions = [];
@@ -59,7 +59,7 @@ function displayQuestion() {
         question.incorrect_answers.forEach((incorrectAnswer) => {
             const button = document.createElement("button");
             button.classList.add("btn", "option");
-            button.textContent = incorrectAnswer;
+            button.textContent = he.decode(incorrectAnswer);
             optionsElement.appendChild(button);
             button.addEventListener("click", checkAnswer); 
         });
