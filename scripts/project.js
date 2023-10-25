@@ -1,5 +1,5 @@
 ///Defines API URL
-const API_URL = "https://opentdb.com/api.php?amount=15&category=9&difficulty=easy";
+const API_URL = "https://opentdb.com/api.php?amount=30&category=9&difficulty=easy";
 
 //Instantiates varibale for storing questions, current question index, the score, and sets maximum high scores to ten
 let questions = [];
